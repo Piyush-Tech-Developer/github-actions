@@ -26,7 +26,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
-            github-actions # The name you gave your secret in AWS
+            arn:aws:secretsmanager:ap-south-1:470342886994:secret:github-actions-h2SU86 # The name you gave your secret in AWS
           parse-json-secrets: true
 
       # Use the secrets to upload your file
