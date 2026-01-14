@@ -29,6 +29,16 @@ jobs:
             arn:aws:secretsmanager:ap-south-1:470342886994:secret:github-actions-h2SU86
           parse-json-secrets: true
 
+      - name: Verify Secret Presence
+        run: |
+          if [ -n "$GITHUB_ACTIONS_AWS_ACCESS_KEY" ]; then
+            echo "Secrets successfully fetched from AWS Secrets Manager!"
+          else
+            echo "Secrets were NOT found."
+            exit 1
+          fi
+
+
       # Use the secrets to upload your file
       - name: Upload File to S3
         run: |
