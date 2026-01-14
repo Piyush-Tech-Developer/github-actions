@@ -1,0 +1,39 @@
+name: Secure S3 Upload
+on:
+  push:
+    branches:
+      - main  # Runs every time you push code to the 'main' branch
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # Required for secure OIDC connection
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Connect to AWS using the IAM Role you created earlier
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::470342886994:role/github-actions # Replace with your Role ARN
+          aws-region: ap-south-1 # Replace with your bucket's region
+
+      # Pull your keys from AWS Secrets Manager
+      - name: Fetch Secrets from AWS
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            github-actions # The name you gave your secret in AWS
+          parse-json-secrets: true
+
+      # Use the secrets to upload your file
+      - name: Upload File to S3
+        run: |
+          aws s3 cp ./your-file-name.txt s3://github-actions-tutorial9/
+        env:
+          # These variables are created automatically from your Secret Keys
+          AWS_ACCESS_KEY_ID: ${{ env.S3_CREDENTIALS_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.S3_CREDENTIALS_AWS_SECRET_ACCESS_KEY }}
