@@ -35,6 +35,6 @@ jobs:
           aws s3 cp ./code.py s3://github-actions-tutorial9/
         env:
           # These variables are created automatically from your Secret Keys
-          AWS_ACCESS_KEY: ${{ env.GITHUB_ACTIONS_AWS_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ env.GITHUB_ACTIONS_AWS_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ env.GITHUB_ACTIONS_AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ap-south-1
