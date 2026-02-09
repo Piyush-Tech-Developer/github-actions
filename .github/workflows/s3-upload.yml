@@ -14,14 +14,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Connect to AWS using the IAM Role you created earlier
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::470342886994:role/github-actions # Replace with your Role ARN
-          aws-region: ap-south-1 # Replace with your bucket's region
+          aws-region: ap-south-1
 
-      # Pull your keys from AWS Secrets Manager
+      # Pulling keys from AWS Secrets Manager
       - name: Fetch Secrets from AWS
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
@@ -39,7 +38,6 @@ jobs:
           fi
 
 
-      # Use the secrets to upload your file
       - name: Upload File to S3
         run: |
           aws s3 cp ./code.py s3://github-actions-tutorial9/
